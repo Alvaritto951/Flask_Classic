@@ -5,4 +5,4 @@ import os #Es para poder Borrar (delete) y renombrar (rename)
 
 @app.route("/index")
 def index():
-    return "Servidor funcionando"
+    return render_template("index.html", pageTitle="Todos los movimientos")
