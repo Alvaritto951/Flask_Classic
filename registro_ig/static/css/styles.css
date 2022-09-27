@@ -9,5 +9,5 @@ body {
     min-height: 100vh;
     display: grid;
     grid-template-rows: auto 50px 1fr auto;
-    margin: 0
+    margin: 0;
 }
