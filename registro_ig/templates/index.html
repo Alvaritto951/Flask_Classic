@@ -27,14 +27,14 @@
             {% for movement in data %}
             <tr>
                 <td>{{ movement.date }}</td>
-                <td>{{ movement.description }}</td>
-                <td>{{ movement.quantity }}</td>
-                <td>
+                <td>{{ movement.description | title }}</td>
+                <td class="number">{{ "%.2f" | format(movement.quantity) }} €</td> <!-- Para poner decimales -->
+                <td> #TODO
                     <a href="/mod/{{movement.id}}">
                     <span class="material-symbols-outlined">
                         edit
                     </span>
-                    </a>
+                    </a> #TODO
                     <a href="/delete/{{movement.id}}">
                     <span class="material-symbols-outlined">
                         delete
