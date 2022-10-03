@@ -1,10 +1,10 @@
 import imp
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 import csv
 from registro_ig import app
 import os #Es para poder Borrar (delete) y renombrar (rename)
 from datetime import date
-from registro_ig.models import insert, select_all
+from registro_ig.models import insert, select_all, select_by, delete_by
 from registro_ig.forms import MovementForm
 
 @app.route("/index")
@@ -61,5 +61,52 @@ def validaFormulario(camposFormulario):
     
     return errores
 
-   
+@app.route("/mod", methods=["GET", "POST"])
+def edit():
+    if request.method == "GET":
+        """
+        1º Consultar en movimientos.txt y recuperar el registro con id al de la petición
+        2º Devolver el formulario html con los datos de mi registro
+        """
+        registro_definitivo = select_by(id) #1º Consultar en movimientos.txt y recuperar el registro con id al de la petición
 
+        if registro_definitivo:
+            return render_template("mod.html", registro=registro_definitivo, pageTitle="Actualizar/Modificar") #2º Devolver el formulario html con los datos de mi registro
+        else:
+            return redirect(url_for("index")) #Si no, llévame a index
+    else:
+        """
+        1º Validar registro de entrada
+        2º Si el registro es correcto, lo sustituyo en movimientos.txt. La mejor manera es copiar registro a registro en fichero nuevo y dar el cambiazo
+        3º Redirect
+        4º Si el registro es incorrecto, la gestión de errores que conocemos
+        """
+        errores = validaFormulario(request.form) #1º Validar registro de entrada
+    
+    if not errores:
+        update_by(form_to_list(id, request.form)) #Viene de la función form_to_list
+        #2º Si el registro es correcto, lo sustituyo en movimientos.txt (con la función que viene de models.py: update_by(id)).
+        #La mejor manera es copiar registro a registro en fichero nuevo y dar el cambiazo
+
+        return redirect(url_for("index")) #3º Redirect
+    else:
+        return render_template("mod.html", pageTitle="Actualizar/Modificar", msgErrors=errores,
+            registro=form_to_list(id, request.form)) #Viene de la función form_to_list
+            #4º Si el registro es incorrecto, la gestión de errores que conocemos
+    
+
+@app.route("/delete/<int:id>", methods=["GET", "POST"])
+def remove(id):
+    # Para probar que funciona la página: return "Voy a borrar {}".format(id)
+    #registro = select_by(id)
+    if request.method == "GET":
+        registro = select_by(id)
+        if registro:
+            return render_template("delete.html", pageTitle="Eliminar movimientos", movement=select_by(id))
+        else:
+            flash(f"No se encuentra el registro {id}.")
+            return redirect(url_for("index")) #El registro ya no existe
+    else:
+        delete_by(id)
+        flash("Movimiento borrado correctamente.")
+        return redirect(url_for("index")) #Registro borrado correctamente

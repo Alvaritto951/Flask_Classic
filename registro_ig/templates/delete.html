@@ -1,0 +1,30 @@
+{% extends "base.html"%}
+
+{% block content %}
+<h1>Eliminar Ingreso-Gasto</h1>
+<article>
+    <table border="5">
+        <tr>
+            <th>Fecha:</th>
+            <td>{{ movement.date }}</td>
+        </tr>
+        <tr>
+            <th>Descripción</th>
+            <td>{{ movement.description }}</td>
+        </tr>
+        <tr>
+            <th>Cantidad</th>
+            <td>{{ "%.2f" | format(movement.quantity) }}€</td>
+        </tr>
+        <br>
+    </table>
+    <form action="/delete/{{ movement.id }}" method="POST">
+        <div class="grid">
+            <button>Aceptar</button>
+            <a href="/index" class="return">Cancelar</a>
+        </div>
+    </form>
+</article>
+{% endblock %}
+
+<!-- Traer los datos de movimiento a la tabla-->

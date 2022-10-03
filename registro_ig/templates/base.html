@@ -20,8 +20,19 @@
             <li><a href="/index">Home</a></li>
             <li><a href="/new">Alta</a></li>
         </ul>
-    </nav><br><br>
+    </nav>
+    <br><br>
     <section class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <article class="messages">
+            {% for msg in messages %}
+            <p class="error">{{ msg }}</p>
+            {% endfor%}
+        </article>
+        {% endif %}
+        {% endwith %}
+
         {% block content %} {% endblock %}
     </section>
     <footer>

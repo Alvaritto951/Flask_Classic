@@ -5,22 +5,26 @@
     <table>
         <thead>
             <tr>
-                <th>Fecha
+                <th>FECHA
                     <span class="material-symbols-outlined">
                         calendar_month
                     </span>
                 </th>
-                <th>Descripción
+                <th>DESCRIPCIÓN
                     <span class="material-symbols-outlined">
                         keyboard
                     </span>
                 </th>
-                <th>Cantidad
+                <th>CANTIDAD
                     <span class="material-symbols-outlined">
                         Euro
                     </span>
                 </th>
-                <th>Acción</th>
+                <th>ACCIÓN 
+                    <span class="material-symbols-outlined">
+                        editdelete
+                    </span>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -29,12 +33,12 @@
                 <td>{{ movement.date }}</td>
                 <td>{{ movement.description | title }}</td>
                 <td class="number">{{ "%.2f" | format(movement.quantity) }} €</td> <!-- Para poner decimales -->
-                <td> #TODO
+                <td>
                     <a href="/mod/{{movement.id}}">
                     <span class="material-symbols-outlined">
                         edit
                     </span>
-                    </a> #TODO
+                    </a>
                     <a href="/delete/{{movement.id}}">
                     <span class="material-symbols-outlined">
                         delete
